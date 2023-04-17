@@ -25,36 +25,35 @@ const db = mysql.createPool({
     host: "localhost",
     user:"root",
     password:"Kishwari@123",
-    database:"crud_contact"
+    database:"demo"
 });
 
 
 
 
 app.get("/register", (req, res) => {
-    const sqlGet = "SELECT * FROM users";
+    const sqlGet = "SELECT * FROM register";
     db.query(sqlGet, (error, result)=>{
         res.send(result);
     });
 });
 
-app.get("/contact", (req, res) => {
-    const sqlGet = "SELECT * FROM contact";
-    db.query(sqlGet, (error, result) => {
-        res.send(result);
-    });
-});
+// app.get("/contact", (req, res) => {
+//     const sqlGet = "SELECT * FROM contact";
+//     db.query(sqlGet, (error, result) => {
+//         res.send(result);
+//     });
+// });
 
 
 
 app.post('/register', (req, res) => {
-    const name  = req.body.name;
+    const username  = req.body.username;
     const email = req.body.email;
-    const contact = req.body.contact;
     const password = req.body.password;
 
-    db.query("INSERT INTO users ( name,email,contact, password ) VALUES (?,?,?,?)",
-     [name,email,contact, password], (error, result) => {
+    db.query("INSERT INTO register ( username,email, password ) VALUES (?,?,?)",
+     [username,email, password], (error, result) => {
             console.log(error);
         }
     );
@@ -63,12 +62,12 @@ app.post('/register', (req, res) => {
 
 
 app.post('/login', (req,res)=>{
-    const name = req.body.name;
+    const username = req.body.username;
     const password = req.body.password;
 
     db.query(
-        "SELECT * FROM users WHERE name = ? AND password = ?",
-        [name, password],
+        "SELECT * FROM register WHERE username = ? AND password = ?",
+        [username, password],
         (err, result) => {
             if(err) {
                 res.send({err:err});
